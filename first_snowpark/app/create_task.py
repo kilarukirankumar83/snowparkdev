@@ -9,18 +9,13 @@ from snowflake.snowpark.functions import udf
 import functions
 import os
 
-connection_parameters = {
-    "account": os.environ.get("SNOWFLAKE_ACCOUNT"),
-    "database": os.environ.get("SNOWFLAKE_DATABASE"),
-    "warehouse": os.environ.get("SNOWFLAKE_WAREHOUSE"),
-    "role": os.environ.get("SNOWFLAKE_ROLE"),
-    "user": os.environ.get("SNOWFLAKE_USER"),
-    "password": os.environ.get("SNOWFLAKE_PASSWORD")
-}
-
-print(connection_parameters)
-
-connection = snowflake.connector.connect(connection_parameters=connection_parameters)
+connection = snowflake.connector.connect( 
+    account = os.environ.get("SNOWFLAKE_ACCOUNT"),
+    database = os.environ.get("SNOWFLAKE_DATABASE"),
+    warehouse = os.environ.get("SNOWFLAKE_WAREHOUSE"),
+    role = os.environ.get("SNOWFLAKE_ROLE"),
+    user = os.environ.get("SNOWFLAKE_USER"),
+    password = os.environ.get("SNOWFLAKE_PASSWORD"))
 print("Connection established")
 print(connection)
 
