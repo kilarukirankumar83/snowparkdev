@@ -30,6 +30,8 @@ jobs:
           python-version: '3.9'
       - name: Install python packages
         run: pip install -r requirements.txt
+      - name: add snowflake connection
+        run: snow add connection --user $SNOWFLAKE_USER --password $SNOWFLAKE_PASSWORD --account $SNOWFLAKE_ACCOUNT --role $SNOWFLAKE_ROLE --database $SNOWFLAKE_DATABASE --warehouse $SNOWFLAKE_WAREHOUSE
       - name: Copy sql files to stage
         working-directory: de_project_1/app
         run: snow stage copy load_to_emp_tgt.sql @dev_deployment/de_project_1
