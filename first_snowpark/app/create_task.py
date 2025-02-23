@@ -9,17 +9,17 @@ from snowflake.snowpark.functions import udf
 import functions
 import os
 
-connection = snowflake.connector.connect( 
-    account = os.environ.get("SNOWFLAKE_ACCOUNT"),
-    database = os.environ.get("SNOWFLAKE_DATABASE"),
-    warehouse = os.environ.get("SNOWFLAKE_WAREHOUSE"),
-    role = os.environ.get("SNOWFLAKE_ROLE"),
-    user = os.environ.get("SNOWFLAKE_USER"),
-    password = os.environ.get("SNOWFLAKE_PASSWORD"))
+connection = snowflake.connector.connect(user=os.environ.get("SNOWFLAKE_USER"), password=os.environ.get("SNOWFLAKE_PASSWORD"),\
+                                         role=os.environ.get("SNOWFLAKE_ROLE"), database=os.environ.get("SNOWFLAKE_DATABASE"),\
+                                         account=os.environ.get("SNOWFLAKE_ACCOUNT"),\
+                                         warehouse=os.environ.get("SNOWFLAKE_WAREHOUSE"),\
+                                        schema="PUBLIC")
 print("Connection established")
 print(connection)
 
 root = Root(connection)
+
+print(root)
 
 my_task = Task('my_task', StoredProcedureCall(procedures.hello_procedure, stage_location='dev_deployment'),\
  warehouse='compute_wh', schedule=timedelta(hours=1))
@@ -28,9 +28,10 @@ tasks = root.databases["demo_db"].schemas["public"].tasks
 
 #tasks.create(my_task)
 
+def task_condition_branch(session: Session) -> str:
+    return "my_test_task3"
 
-
-with DAG('my_dag',schedule=timedelta(days=1)) as dag:
+with DAG('my_dag',schedule=timedelta(days=1), warehouse="compute_wh", stage_location="@dev_deployment") as dag:
     dag_task_1 = DAGTask("my_hello_task", StoredProcedureCall(procedures.hello_procedure, args=["Kiran"], 
                          stage_location="dev_deployment",\
                          packages=['snowflake-snowpark-python'], imports=['@dev_deployment/first_snowpark/app.zip']),\
@@ -58,13 +59,6 @@ with DAG('my_dag',schedule=timedelta(days=1)) as dag:
     dag_op = DAGOperation(schema=schema)
 
     dag_op.deploy(dag, mode=CreateMode.or_replace)
-
-
-
-def task_condition_branch(session: Session) -> str:
-    return "my_test_task3"
-
-
 
 with DAG('my_dag_task_branch',schedule=timedelta(days=1), warehouse="compute_wh", stage_location="@dev_deployment",\
           use_func_return_value=True, packages=["snowflake-snowpark-python"]) as dag_branch:
