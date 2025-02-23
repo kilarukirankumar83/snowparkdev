@@ -1,0 +1,32 @@
+definition_version: "1.1"
+snowpark:
+  project_name: "first_snowpark"
+  stage_name: "dev_deployment"
+  src: "app/"
+  functions:
+    - name: hello_function
+      handler: "functions.hello_function"
+      signature:
+        - name: "name"
+          type: "string"
+      returns: string
+    - name:  test_branch_condition
+      handler: "functions.test_branch_condition"
+      signature: ""
+      returns: string
+  procedures:
+    - name: hello_procedure
+      handler: "procedures.hello_procedure"
+      signature:
+        - name: "name"
+          type: "string"
+      returns: string
+    - name: test_procedure
+      handler: "procedures.test_procedure"
+      signature: ""
+      returns: string
+    - name: test_procedure_two
+      handler: "procedures.test_procedure_two"
+      signature: ""
+      returns: string
+
