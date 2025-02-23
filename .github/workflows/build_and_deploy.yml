@@ -10,28 +10,28 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
   
-  steps:
-    - name: Checkout repository
-      uses: actions/checkout@v4
-      with:
-        repository: kilarukirankumar83/snowparkdev
-        ref: dev
-    - name: Setup python 3.9
-      uses: actions/setup-python@v4
-      with:
-        python-version: '3.9'
-    - name: Install python packages
-      run: pip install -r requirements.rxt
-    - name: Deploy snowpark apps
-      working-directory: first_snowpark
-      env:
-          SNOWFLAKE_ACCOUNT: ${{ screts.SNOWFLAKE_ACCOUNT_DEV }}
-          SNOWFLAK_USER: ${{ secrets.SNOWFLAKE_USER_DEV }}
-          SNOWFLAK_WAREHOUSE: ${{ secrets.SNOWFLAKE_WAREHOUSE_DEV }}
-          SNOWFLAK_ROLE: ${{ secrets.SNOWFLAKE_ROLE_DEV }}
-          SNOWFLAK_DATABASE: ${{ secrets.SNOWFLAKE_DATABASE_DEV }}
-          SNOWFLAK_PASSWORD: ${{ secrets.SNOWFLAKE_PASSWORD_DEV }}
-      run: python deploy_snowpark_app.py $GITHUB_WORKSPACE/first_snowpark
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          repository: kilarukirankumar83/snowparkdev
+          ref: dev
+      - name: Setup python 3.9
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.9'
+      - name: Install python packages
+        run: pip install -r requirements.rxt
+      - name: Deploy snowpark apps
+        working-directory: first_snowpark
+        env:
+            SNOWFLAKE_ACCOUNT: ${{ screts.SNOWFLAKE_ACCOUNT_DEV }}
+            SNOWFLAK_USER: ${{ secrets.SNOWFLAKE_USER_DEV }}
+            SNOWFLAK_WAREHOUSE: ${{ secrets.SNOWFLAKE_WAREHOUSE_DEV }}
+            SNOWFLAK_ROLE: ${{ secrets.SNOWFLAKE_ROLE_DEV }}
+            SNOWFLAK_DATABASE: ${{ secrets.SNOWFLAKE_DATABASE_DEV }}
+            SNOWFLAK_PASSWORD: ${{ secrets.SNOWFLAKE_PASSWORD_DEV }}
+        run: python deploy_snowpark_app.py $GITHUB_WORKSPACE/first_snowpark
 
 
 
