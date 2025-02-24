@@ -34,7 +34,7 @@ jobs:
       - name: Install python packages
         run: pip install -r requirements.txt
       - name: Setup Snow CLI
-        uses: Snowflake-Labs/snowflake-cli-action@v1.4
+        uses: Snowflake-Labs/snowflake-cli-action@v1.5
         with:
           cli-version: "latest"
           default-config-file-path: "config.toml"
