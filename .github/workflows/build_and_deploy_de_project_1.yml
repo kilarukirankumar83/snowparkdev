@@ -38,9 +38,9 @@ jobs:
         with:
           cli-version: "latest"
           default-config-file-path: "config.toml"
-      - name: Copy sql files to stage
-        working-directory: de_project_1/app
-        run: snow stage copy load_to_emp_tgt.sql @dev_deployment/de_project_1/ --connection myconnection
+      # - name: Copy sql files to stage
+      #   working-directory: de_project_1/app
+      #   run: snow stage copy load_to_emp_tgt.sql @dev_deployment/de_project_1/ --connection myconnection
       - name: Deploy snowpark apps
         working-directory: de_project_1
         run: python deploy_snowpark_app.py $GITHUB_WORKSPACE/de_project_1
