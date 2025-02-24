@@ -11,7 +11,10 @@ env:
   SNOWFLAKE_ROLE: ${{ secrets.SNOWFLAKE_ROLE_DEV }}
   SNOWFLAKE_DATABASE: ${{ secrets.SNOWFLAKE_DATABASE_DEV }}
   SNOWFLAKE_PASSWORD: ${{ secrets.SNOWFLAKE_PASSWORD_DEV }}
-  
+  SNOWFLAKE_CONNECTIONS_MYCONNECTION_ACCOUNT: ${{ secrets.SNOWFLAKE_ACCOUNT_DEV }}
+  SNOWFLAKE_CONNECTIONS_MYCONNECTION_USER: ${{ secrets.SNOWFLAKE_USER_DEV }}
+  SNOWFLAKE_CONNECTIONS_MYCONNECTION_PASSWORD: ${{ secrets.SNOWFLAKE_PASSWORD_DEV }}
+  SNOWFLAKE_CONNECTIONS_MYCONNECTION_DATABASE: ${{ secrets.SNOWFLAKE_DATABASE_DEV }}
   workflow_dispatch:
 
 jobs:
@@ -30,8 +33,11 @@ jobs:
           python-version: '3.9'
       - name: Install python packages
         run: pip install -r requirements.txt
-      - name: add snowflake connection
-        run: snow connection add --user $SNOWFLAKE_USER --password $SNOWFLAKE_PASSWORD --account $SNOWFLAKE_ACCOUNT --role $SNOWFLAKE_ROLE --database $SNOWFLAKE_DATABASE --warehouse $SNOWFLAKE_WAREHOUSE
+      - name: Setup Snow CLI
+        uses: Snowflake-Labs/snowflake-cli-action@v1
+        with:
+          cli-version: "latest"
+          default-config-file-path: "config.toml"
       - name: Copy sql files to stage
         working-directory: de_project_1/app
         run: snow stage copy load_to_emp_tgt.sql @dev_deployment/de_project_1
