@@ -5,8 +5,15 @@ from datetime import timedelta
 import procedures
 from snowflake.core.task.dagv1 import DAG, DAGOperation, DAGTask, CreateMode
 from snowflake.snowpark.functions import udf
+import os
 
-connection = snowflake.connector.connect()
+connection = snowflake.connector.connect(user=os.environ.get("SNOWFLAKE_USER"), password=os.environ.get("SNOWFLAKE_PASSWORD"),\
+                                         role=os.environ.get("SNOWFLAKE_ROLE"), database=os.environ.get("SNOWFLAKE_DATABASE"),\
+                                         account=os.environ.get("SNOWFLAKE_ACCOUNT"),\
+                                         warehouse=os.environ.get("SNOWFLAKE_WAREHOUSE"),\
+                                        schema="PUBLIC")
+
+# connection = snowflake.connector.connect()
 root = Root(connection)
 
 with DAG('dag_copy_emp',schedule=timedelta(days=1), warehouse="compute_wh", stage_location="@dev_deployment") as dag:
